@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  @apply bg-vedic-bg bg-cover bg-no-repeat bg-fixed bg-center;
+}
