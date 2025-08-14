@@ -1,20 +1,37 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const SutraCard = ({ title, description, link }) => {
-  const navigate = useNavigate();
-
+const SutraCard = ({ name, sanskrit, description, linkTo }) => {
   return (
-    <div
-      onClick={() => navigate(link)}
-      className="cursor-pointer p-5 w-72 rounded-xl shadow-lg 
-                 bg-[rgba(72,40,20,0.35)] border border-[rgba(150,100,60,0.4)]
-                 backdrop-blur-md text-yellow-200 hover:scale-105 transition-transform duration-300
-                 hover:shadow-[0_0_15px_rgba(255,215,0,0.6)]"
+    // The entire card is now a clickable link
+    <a
+      href={linkTo} // Use the linkTo prop for the URL
+      className="flex justify-center items-center py-4 px-4 h-full" // Adjusted padding and added h-full for consistent height in grid
     >
-      <h2 className="text-2xl font-bold mb-2">Title</h2>
-      <p className="text-sm text-yellow-100/80">Description</p>
-    </div>
+      <div className="relative bg-gradient-to-b from-amber-50 to-amber-100 border-2 border-amber-400 rounded-2xl shadow-xl p-8 max-w-lg w-full transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer h-full flex flex-col justify-between">
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] pointer-events-none rounded-2xl"></div>
+        
+        {/* Sutra Name (English) */}
+        <h2 className="relative z-10 text-xl md:text-2xl text-amber-900 font-bold mb-3 text-center font-sans">
+          {name}
+        </h2>
+
+        {/* Sanskrit Formula */}
+        <p className="relative z-10 text-2xl md:text-3xl text-amber-800 text-center italic font-serif mb-4">
+          {sanskrit}
+        </p>
+
+        {/* Decorative Divider */}
+        <div className="relative z-10 flex justify-center my-4">
+          <div className="h-1 w-24 bg-amber-700 rounded-full"></div>
+        </div>
+
+        {/* Description */}
+        <p className="relative z-10 text-base text-amber-950 text-center leading-relaxed font-sans flex-grow">
+          {description}
+        </p>
+      </div>
+    </a>
   );
 };
 
