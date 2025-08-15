@@ -8,6 +8,7 @@ export default {
     extend: {
       backgroundImage: {
         'vedic-bg': "url('/src/assets/background.png')",
+        'sutra-bg':"url('/src/assets/sutra-bg.jpg')",
       },
     },
   },

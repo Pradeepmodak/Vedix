@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, ScrollText } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="relative min-h-[20vh] w-full bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 text-amber-900 border-t border-amber-400 shadow-inner">
+    <footer className="relative min-h-[20vh] bottom-0 w-full bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 text-amber-900 border-t border-amber-400 shadow-inner">
       
       {/* Main content container */}
       <div className="relative w-full mx-auto px-6 py-10 flex flex-col md:flex-row items-center md:justify-between text-center md:text-left gap-10 max-w-7xl">
