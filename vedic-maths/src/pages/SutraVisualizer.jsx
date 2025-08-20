@@ -1,387 +1,283 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Import Lucide React icons
-// You'll need to install lucide-react if you haven't already: npm install lucide-react
-import { Play, Pause } from 'lucide-react';
-
+// Main Component
 export default function SutraVisualizer() {
-  const fullTitle = "Sutra 1: Ekadhikena Purvena";
+    // --- State for Inputs ---
+    const [inputs, setInputs] = useState({ rule1: "", rule2_1: "", rule2_2: "", rule3_num: "", rule3_den: "" });
 
-  const [inputNumber, setInputNumber] = useState("");
-  const [steps, setSteps] = useState([]);
-  const [showSwiper, setShowSwiper] = useState(false);
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [animationState, setAnimationState] = useState({});
-  const [showAlertModal, setShowAlertModal] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const swiperRef = useRef(null);
-const [displayedTitle, setDisplayedTitle] = useState("");
+    // --- State for Visualizers ---
+    const [activeVisualizer, setActiveVisualizer] = useState(null);
+    const [steps, setSteps] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [accumulatedAnswer, setAccumulatedAnswer] = useState("0."); // For Rule 3's appending answer
 
-useEffect(() => {
-  let index = 0;
-  let typingTimer;
-  let resetTimer;
+    const handleInputChange = (rule, value) => setInputs(prev => ({ ...prev, [rule]: value }));
 
-  const typeCharacter = () => {
-    if (index < fullTitle.length) {
-      setDisplayedTitle(fullTitle.slice(0, index + 1)); // avoids stale state
-      index++;
-      typingTimer = setTimeout(typeCharacter, 100);
-    } else {
-      resetTimer = setTimeout(() => {
-        setDisplayedTitle("");
-        index = 0;
-        typeCharacter();
-      }, 3000);
-    }
-  };
-
-  typeCharacter();
-
-  return () => {
-    clearTimeout(typingTimer);
-    clearTimeout(resetTimer);
-  };
-}, []);
-
-
-  const handleVisualize = () => {
-    const num = parseInt(inputNumber);
-    if (!inputNumber || isNaN(num) || num % 10 !== 5) {
-      setAlertMessage("Please enter a number ending in 5 to visualize this sutra!");
-      setShowAlertModal(true);
-      return;
-    }
-
-    const lastDigit = num % 10;
-    const remainingDigits = Math.floor(num / 10);
-    const nextNumber = remainingDigits + 1;
-    const step2Result = remainingDigits * nextNumber;
-    const finalAnswer = `${step2Result}${lastDigit * lastDigit}`;
-
-    // Define the initial introductory step
-    const introStep = {
-      title: "Introduction to Ekadhikena Purvena Sutra",
-      visuals: [
-        { type: 'text', value: `This visualization demonstrates the 'Ekadhikena Purvena' Sutra.` },
-        { type: 'text', value: `It's primarily used for squaring numbers that end with the digit 5.` },
-        { type: 'text', value: `For example, we will calculate the square of ${num}.` },
-        { type: 'text', value: `The process involves two main parts: the Right-Hand Side (RHS) and the Left-Hand Side (LHS) of the final answer.` },
-      ],
-      explanation: `The 'Ekadhikena Purvena' Sutra, meaning "By one more than the previous", simplifies specific multiplication problems, especially squaring numbers ending in 5. This method divides the problem into simpler, easily calculable parts.`
+    const resetVisualizer = () => {
+        setSteps([]);
+        setCurrentPage(0);
+        setAccumulatedAnswer("0."); // Reset for Rule 3
     };
 
-    // Define the calculation steps
-    const calculationSteps = [
-      {
-        title: "Step 1: The Right-hand side (RHS)",
-        visuals: [
-          { type: 'text', value: `Multiply the last digit by itself.` },
-          { type: 'number', value: lastDigit, label: `Last Digit` },
-          { type: 'operator', value: '×' },
-          { type: 'number', value: lastDigit, label: `Last Digit` },
-          { type: 'operator', value: '=' },
-          { type: 'result', value: 25, label: `RHS Result` },
-        ],
-        solution: "25",
-        explanation: `The right-hand side of our answer is always 25 when squaring a number ending in 5. This is simply ${lastDigit} multiplied by ${lastDigit}.`
-      },
-      {
-        title: "Step 2: The Left-hand side (LHS)",
-        visuals: [
-          { type: 'text', value: `Multiply the preceding digits by 'one more than the previous'.` },
-          { type: 'number', value: remainingDigits, label: `Preceding Digits` },
-          { type: 'operator', value: '×' },
-          { type: 'number', value: nextNumber, label: `(${remainingDigits}+1)` },
-          { type: 'operator', value: '=' },
-          { type: 'result', value: step2Result, label: `LHS Result` },
-        ],
-        solution: step2Result,
-        previousSolution: 25,
-        explanation: `For the left-hand side, take the digits before the '5' (${remainingDigits}) and multiply them by the number that is one greater than them (${nextNumber}). This gives us ${step2Result}.`
-      },
-      {
-        title: "Step 3: Combine the results",
-        visuals: [
-          { type: 'text', value: `Place the Left-hand side result before the Right-hand side result.` },
-          { type: 'combine', value1: step2Result, value2: 25, final: finalAnswer }
-        ],
-        solution: finalAnswer,
-        explanation: `Finally, simply place the result from the left-hand side (${step2Result}) in front of the right-hand side result (25). This gives us the complete square: ${finalAnswer}.`
-      }
-    ];
-
-    setSteps([introStep, ...calculationSteps]); // Combine intro step with calculation steps
-    setShowSwiper(true);
-    setCurrentStepIndex(0);
-    setAnimationState({});
-    setIsPlaying(true); // Start playing when visualize is clicked
-    if (swiperRef.current) {
-      setTimeout(() => swiperRef.current.slideTo(0, 500), 100);
-    }
-  };
-
-  // Effect for animating elements within a step and auto-advancing slides
-  useEffect(() => {
-    let timers = [];
-    if (steps.length > 0 && showSwiper && isPlaying) {
-      const currentVisuals = steps[currentStepIndex].visuals;
-      setAnimationState({}); // Reset animation state for the new slide
-
-      let delay = 0;
-      currentVisuals.forEach((visual, index) => {
-        const timer = setTimeout(() => {
-          setAnimationState(prev => ({ ...prev, [`item-${index}`]: true }));
-        }, delay);
-        timers.push(timer);
-        delay += (visual.type === 'text' ? 900 : 1200); // Slower delay for all elements
-      });
-
-      // After all animations in the current slide complete, move to the next slide
-      const nextSlideTimer = setTimeout(() => {
-        if (swiperRef.current) {
-          if (currentStepIndex < steps.length - 1) {
-            swiperRef.current.slideNext();
-          } else {
-            // Loop back to the first slide after a delay
-            swiperRef.current.slideTo(0);
-          }
+    // --- RULE 1: SQUARING A NUMBER ENDING IN 5 ---
+    const handleVisualizeRule1 = () => {
+        resetVisualizer();
+        setActiveVisualizer('rule1');
+        // ... (Logic for Rule 1 remains the same)
+        const num = parseInt(inputs.rule1);
+        if (!inputs.rule1 || isNaN(num) || num % 10 !== 5) {
+            setSteps([{ type: 'error', message: "Please enter a valid number ending in 5." }]);
+            return;
         }
-      }, delay + 3500); // Increased pause before moving to next slide
-      timers.push(nextSlideTimer);
-    }
-
-    // Cleanup timers when component unmounts or dependencies change
-    return () => {
-      timers.forEach(timer => clearTimeout(timer));
+        const precedingDigits = Math.floor(num / 10);
+        const lhsResult = precedingDigits * (precedingDigits + 1);
+        const rhsResult = 25;
+        const finalAnswer = `${lhsResult}${rhsResult}`;
+        setSteps([
+            { type: 'rhs', calculation: `5 × 5`, result: rhsResult, explanation: "The Right-Hand Side (RHS) is always the square of 5." },
+            { type: 'lhs', calculation: `${precedingDigits} × ${precedingDigits + 1}`, result: lhsResult, explanation: "The Left-Hand Side (LHS) is the preceding digit(s) multiplied by the next consecutive number." },
+            { type: 'combine', lhs: lhsResult, rhs: rhsResult, final: finalAnswer, explanation: "Combine the LHS and RHS to get the final answer." },
+        ]);
     };
-  }, [currentStepIndex, steps, showSwiper, isPlaying]); // Added isPlaying to dependencies
 
-  const handleSlideChange = (swiper) => {
-    setCurrentStepIndex(swiper.activeIndex);
-    setAnimationState({}); // Reset animation state for the new slide
-    setIsPlaying(true); // Auto-play the new slide when navigated
-  };
+    // --- RULE 2: SPECIAL MULTIPLICATION ---
+    const handleVisualizeRule2 = () => {
+        resetVisualizer();
+        setActiveVisualizer('rule2');
+        // ... (Logic for Rule 2 remains the same)
+         const num1 = parseInt(inputs.rule2_1);
+        const num2 = parseInt(inputs.rule2_2);
+        if (isNaN(num1) || isNaN(num2)) {
+            setSteps([{ type: 'error', message: "Please enter two valid numbers." }]);
+            return;
+        }
+        const lastDigit1 = num1 % 10, lastDigit2 = num2 % 10;
+        const preceding1 = Math.floor(num1 / 10), preceding2 = Math.floor(num2 / 10);
+        if (lastDigit1 + lastDigit2 !== 10 || preceding1 !== preceding2) {
+            setSteps([{ type: 'error', message: "Conditions not met: Last digits must sum to 10 and preceding digits must be the same." }]);
+            return;
+        }
+        const rhsResult = lastDigit1 * lastDigit2;
+        const lhsResult = preceding1 * (preceding1 + 1);
+        const finalAnswer = `${lhsResult}${String(rhsResult).padStart(2, '0')}`;
+        setSteps([
+            { type: 'rhs', calculation: `${lastDigit1} × ${lastDigit2}`, result: String(rhsResult).padStart(2, '0'), explanation: "The RHS is the product of the last digits." },
+            { type: 'lhs', calculation: `${preceding1} × ${preceding1 + 1}`, result: lhsResult, explanation: "The LHS is the common preceding digit multiplied by the next number." },
+            { type: 'combine', lhs: lhsResult, rhs: String(rhsResult).padStart(2, '0'), final: finalAnswer, explanation: "Combine the results to get the final answer." },
+        ]);
+    };
 
-  const getVisualContent = (visual, index) => {
-    switch (visual.type) {
-      case 'text':
-        return (
-          <motion.p
-            key={index}
-            className="text-lg sm:text-xl md:text-2xl my-2 w-full text-center"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {visual.value}
-          </motion.p>
-        );
-      case 'number':
-        return (
-          <motion.div
-            key={index}
-            className="flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-yellow-300 text-brown-800 font-bold text-4xl sm:text-5xl shadow-md p-2"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            {visual.value}
-            {visual.label && <span className="text-xs sm:text-sm mt-1 font-normal text-brown-600">{visual.label}</span>}
-          </motion.div>
-        );
-      case 'operator':
-        return (
-          <motion.div
-            key={index}
-            className="text-brown-800 font-extrabold text-4xl sm:text-5xl mx-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            {visual.value}
-          </motion.div>
-        );
-      case 'result':
-        return (
-          <motion.div
-            key={index}
-            className="flex flex-col items-center justify-center h-20 px-6 sm:h-24 sm:px-8 rounded-full bg-green-300 text-brown-800 font-bold text-4xl sm:text-5xl shadow-lg p-2"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            {visual.value}
-            {visual.label && <span className="text-xs sm:text-sm mt-1 font-normal text-brown-700">{visual.label}</span>}
-          </motion.div>
-        );
-      case 'combine':
-        return (
-          <motion.div
-            key={index}
-            className="flex flex-col items-center justify-center text-brown-800 font-bold text-6xl sm:text-7xl mt-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <p className="text-yellow-600">{visual.value1}</p>
-            <p className="text-green-600 -mt-2">{visual.value2}</p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 1 }}
-              className="text-brown-900 font-extrabold text-7xl sm:text-8xl mt-4 border-b-4 border-yellow-500 pb-2"
-            >
-              = {visual.final}
-            </motion.p>
-          </motion.div>
-        );
-      default:
-        return null;
-    }
-  };
+    // --- RULE 3: DECIMAL CONVERSION ---
+    const handleVisualizeRule3 = () => {
+        resetVisualizer();
+        setActiveVisualizer('rule3');
+        // ... (Logic for Rule 3 remains the same, detecting repetition to stop the loop)
+        const num = parseInt(inputs.rule3_num);
+        const den = parseInt(inputs.rule3_den);
+        if (isNaN(num) || isNaN(den) || den <= 0) {
+            setSteps([{ type: 'error', message: "Please enter a valid numerator and denominator." }]);
+            return;
+        }
+        if (den % 10 !== 9) {
+            setSteps([{ type: 'error', message: "Not Feasible: The denominator must end in 9." }]);
+            return;
+        }
+        const workingDivisor = Math.floor(den / 10) + 1;
+        let currentDividend = num;
+        const generatedSteps = [];
+        const seenDividends = new Map();
+        for (let i = 0; i < den; i++) {
+            if (seenDividends.has(currentDividend)) {
+                generatedSteps[seenDividends.get(currentDividend)].isRepeatingStart = true;
+                break;
+            }
+            seenDividends.set(currentDividend, i);
+            const quotient = Math.floor(currentDividend / workingDivisor);
+            const remainder = currentDividend % workingDivisor;
+            const newDividend = parseInt(`${remainder}${quotient}`);
+            generatedSteps.push({
+                type: 'division', dividend: currentDividend, divisor: workingDivisor,
+                quotient, remainder, newDividend, explanation: `New Dividend = R(${remainder}) prefixed to Q(${quotient})`
+            });
+            currentDividend = newDividend;
+        }
+        setSteps(generatedSteps);
+    };
 
-  return (
-    <div className="min-h-screen bg-cover bg-center flex flex-col items-center text-brown-900 bg-amber-100 p-6 font-sans">
-      {/* Application Title */}
-      {/* Sutra Section - Highlighted Block */}
-      <div className="bg-yellow-200 bg-opacity-90 rounded-2xl shadow-lg p-6 mt-8 max-w-4xl w-full text-center border-4 border-yellow-300">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-brown-800 min-h-[50px] flex items-center justify-center">
-          {displayedTitle}
-        </h1>
-        <p className="italic text-xl sm:text-2xl text-brown-700 mt-2">एकाधिकेन पूर्वेण</p>
-        <p className="mt-4 text-brown-800 text-base sm:text-lg leading-relaxed">
-          This powerful Sutra translates to "<b className="font-bold">By one more than the previous</b>". It's a quick method to solve specific multiplication and division problems.
-        </p>
-      </div>
+    // Updated paginate function to handle Rule 3's appending answer
+    const paginate = (direction) => {
+        const newPage = currentPage + direction;
+        if (newPage >= 0 && newPage < steps.length) {
+            if (activeVisualizer === 'rule3') {
+                if (direction > 0) {
+                    setAccumulatedAnswer(prev => prev + steps[currentPage].quotient);
+                } else {
+                    setAccumulatedAnswer(prev => prev.slice(0, -1));
+                }
+            }
+            setCurrentPage(newPage);
+        }
+    };
 
-      {/* Rules Section - Highlighted Block */}
-      <div className="bg-yellow-100 bg-opacity-90 rounded-2xl shadow-md p-4 mt-6 max-w-3xl w-full text-base sm:text-lg border-2 border-yellow-200">
-        <h2 className="text-2xl sm:text-3xl font-bold text-brown-800 mb-2 text-center">Rules of Application:</h2>
-        <ul className="list-disc list-inside space-y-2 text-brown-800">
-          <li className="font-medium">
-            To find the <b className="font-bold">square of any number ending with 5</b> (e.g., 25², 75²).
-          </li>
-          <li className="font-medium">
-            Finding the product of two numbers whose unit digits sum to 10 and the remaining digits are the same.
-          </li>
-          <li className="font-medium">
-          To convert a fraction whose denominator ends in 9 into a decimal.
-          </li>
-        </ul>
-      </div>
-
-      {/* Input Section */}
-      <div className="flex flex-col sm:flex-row gap-4 mt-8 items-center">
-        <input
-          type="number"
-          placeholder="Enter a number ending with 5 (e.g., 35)"
-          className="border border-yellow-400 rounded-lg px-4 py-2 w-72 text-center text-lg sm:text-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-brown-400"
-          value={inputNumber}
-          onChange={(e) => setInputNumber(e.target.value)}
-        />
-        <button
-          onClick={handleVisualize}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105 active:scale-95 text-xl font-semibold tracking-wide"
-        >
-          Visualize Steps
-        </button>
-      </div>
-
-      {/* Steps Slider */}
-      <AnimatePresence>
-        {showSwiper && (
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.5 }}
-            className="w-full md:w-4/5 lg:w-3/4 xl:w-2/3 mt-10 mx-auto overflow-hidden relative" // Added overflow-hidden and relative
-          >
-            <Swiper
-              modules={[Navigation, Pagination]}
-              navigation
-              pagination={{ clickable: true }}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
-              onSlideChange={handleSlideChange}
-              className="bg-white bg-opacity-95 rounded-2xl shadow-xl p-6 border-4 border-yellow-100"
-              style={{ height: 'auto', minHeight: '550px', maxHeight: '750px' }} // Adjusted height for more content and padding
-            >
-              {steps.map((step, idx) => (
-                <SwiperSlide key={idx}>
-                  <motion.div
-                    className="text-center text-xl sm:text-2xl font-semibold text-brown-800 flex flex-col items-center justify-center p-4 h-full"
-                    key={currentStepIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <h3 className="text-yellow-600 font-bold text-3xl sm:text-4xl mb-4">{step.title}</h3>
-                    <div className="flex items-center justify-center flex-wrap gap-4 my-4 flex-grow"> {/* Added flex-grow */}
-                      {step.visuals.map((visual, visualIdx) => {
-                        // Only render if animationState for this item is true
-                        if (animationState[`item-${visualIdx}`]) {
-                          return getVisualContent(visual, visualIdx);
-                        }
-                        return null; // Don't render if not animated yet
-                      })}
-                    </div>
-                    {/* Display Explanation Text */}
-                    {step.explanation && (
-                      <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: (steps[currentStepIndex].visuals.filter(v => typeof v !== 'string' && v.type !== 'text').length * 1.2) + 1, duration: 0.8 }}
-                        className="text-lg sm:text-xl text-brown-700 max-w-prose mx-auto mt-4 leading-relaxed"
-                      >
-                        {step.explanation}
-                      </motion.p>
-                    )}
-                  </motion.div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            {/* Pause/Resume Icon Button */}
-            <button
-              onClick={() => setIsPlaying(prev => !prev)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-yellow-500 hover:bg-yellow-600 text-white shadow-md transition-colors"
-              aria-label={isPlaying ? 'Pause animation' : 'Resume animation'}
-            >
-              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Custom Alert Modal */}
-      <AnimatePresence>
-        {showAlertModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 p-4"
-          >
-            <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full text-center border-4 border-yellow-400">
-              <h3 className="text-2xl font-bold text-red-600 mb-4">Input Error!</h3>
-              <p className="text-lg text-gray-800 mb-6">{alertMessage}</p>
-              <button
-                onClick={() => setShowAlertModal(false)}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105 active:scale-95 text-lg font-semibold"
-              >
-                Got It!
-              </button>
+    return (
+        <div className="min-h-screen bg-[#f5e5c7] text-stone-800 p-6 sm:p-12 font-serif relative overflow-hidden">
+            {/* Decorative Background Numbers */}
+            <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
+                <span className="absolute top-[5%] left-[10%] text-9xl">4</span>
+                <span className="absolute top-[15%] right-[8%] text-9xl">5</span>
+                <span className="absolute top-[35%] left-[20%] text-8xl">8</span>
+                <span className="absolute top-[50%] right-[25%] text-9xl">2</span>
+                <span className="absolute bottom-[10%] left-[5%] text-9xl">7</span>
+                <span className="absolute bottom-[5%] right-[10%] text-9xl">6</span>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+            
+            <div className="max-w-4xl mx-auto relative z-10">
+                <section className="text-center my-8">
+                    <h1 className="text-5xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-stone-700">
+                        Ekadhikena Purvena
+                    </h1>
+                    <p className="italic text-2xl text-amber-800 mt-2">एकाधिकेन पूर्वेण</p>
+                </section>
+                
+                <section className="card">
+                    <h2 className="card-title">What does it mean?</h2>
+                    <p className="card-text">
+                        The Sutra translates to "<b className="font-bold">By one more than the previous one</b>". It's a versatile mental math technique that simplifies specific calculations.
+                    </p>
+                </section>
+                
+                <section className="card">
+                    <h2 className="card-title">Where can we use it?</h2>
+                     <ul className="list-disc list-inside space-y-2 card-text">
+                        <li><b>Application 1:</b> To find the square of any number ending in 5.</li>
+                        <li><b>Application 2:</b> To multiply two numbers whose last digits sum to 10 and whose preceding digits are identical.</li>
+                        <li><b>Application 3:</b> To convert a fraction with a denominator ending in 9 into a recurring decimal.</li>
+                    </ul>
+                </section>
+                
+                {/* --- Applications --- */}
+                <ApplicationShell title="Application 1: Squaring Numbers Ending in 5" description="..." onVisualize={handleVisualizeRule1} isActive={activeVisualizer === 'rule1'} visualizerProps={{ steps, currentPage, paginate, visualizerId: 'rule1', accumulatedAnswer }}>
+                    <input type="number" placeholder="e.g., 85" className="input-vedic w-full" value={inputs.rule1} onChange={(e) => handleInputChange('rule1', e.target.value)} />
+                </ApplicationShell>
+                
+                <ApplicationShell title="Application 2: Special Multiplication" description="..." onVisualize={handleVisualizeRule2} isActive={activeVisualizer === 'rule2'} visualizerProps={{ steps, currentPage, paginate, visualizerId: 'rule2', accumulatedAnswer }}>
+                    <div className="flex gap-4 w-full">
+                        <input type="number" placeholder="Num 1 (e.g., 42)" className="input-vedic" value={inputs.rule2_1} onChange={(e) => handleInputChange('rule2_1', e.target.value)} />
+                        <input type="number" placeholder="Num 2 (e.g., 48)" className="input-vedic" value={inputs.rule2_2} onChange={(e) => handleInputChange('rule2_2', e.target.value)} />
+                    </div>
+                </ApplicationShell>
+
+                <ApplicationShell title="Application 3: Decimal Conversion" description="..." onVisualize={handleVisualizeRule3} isActive={activeVisualizer === 'rule3'} visualizerProps={{ steps, currentPage, paginate, visualizerId: 'rule3', accumulatedAnswer }}>
+                    <div className="flex gap-4 w-full">
+                        <input type="number" placeholder="Numerator (e.g., 4)" className="input-vedic" value={inputs.rule3_num} onChange={(e) => handleInputChange('rule3_num', e.target.value)} />
+                        <input type="number" placeholder="Denominator (e.g., 89)" className="input-vedic" value={inputs.rule3_den} onChange={(e) => handleInputChange('rule3_den', e.target.value)} />
+                    </div>
+                </ApplicationShell>
+            </div>
+        </div>
+    );
+}
+
+function ApplicationShell({ title, description, children, onVisualize, isActive, visualizerProps }) {
+    return (
+        <section className="mb-12">
+            <div className="card">
+                <h3 className="card-title">{title}</h3>
+                <div className="flex flex-col items-center">
+                    {children}
+                    <button onClick={onVisualize} className="button-vedic mt-6">{isActive ? "Visualize Again" : "Visualize"}</button>
+                </div>
+                <AnimatePresence>{isActive && <VisualizerStage key={visualizerProps.visualizerId} {...visualizerProps} />}</AnimatePresence>
+            </div>
+        </section>
+    );
+}
+
+function VisualizerStage({ steps, currentPage, paginate, visualizerId, accumulatedAnswer }) {
+    if (!steps || steps.length === 0) return null;
+    const currentStep = steps[currentPage];
+
+    // --- Answer Rendering Logic ---
+    const AnswerDisplay = () => {
+        if (visualizerId === 'rule3') {
+             return (
+                 <div className="font-mono text-4xl mt-2 p-2 bg-amber-100/50 rounded-lg inline-block tracking-widest text-stone-800 break-all">
+                     {accumulatedAnswer}
+                     <motion.span layoutId={`q-${currentPage}`} className="text-orange-600 font-extrabold">{currentStep.quotient}</motion.span>
+                 </div>
+             );
+        } else {
+            const finalAnswer = (currentPage === steps.length - 1 && currentStep.type === 'combine') ? currentStep.final : "";
+            return (
+                <div className="font-mono text-5xl mt-8 p-2 text-stone-800 h-full flex items-center justify-center">
+                    {finalAnswer && <motion.span layoutId="final-answer">{finalAnswer}</motion.span>}
+                </div>
+            );
+        }
+    };
+
+    return (
+        <motion.div initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: 'auto', marginTop: '2.5rem' }} exit={{ opacity: 0, height: 0, marginTop: 0 }} className="w-full bg-amber-100 rounded-2xl shadow-inner border border-amber-300/50 p-6 relative min-h-[450px] flex flex-col overflow-hidden">
+            {currentStep.type === 'error' ? (
+                <div className="m-auto text-center"><h3 className="text-3xl font-bold text-red-600">Input Error</h3><p className="text-xl mt-2">{currentStep.message}</p></div>
+            ) : (
+                <>
+                    <div className="text-center mb-6 h-24"><p className="text-lg text-amber-800">Result</p><AnswerDisplay /></div>
+                    <div className="flex-grow flex items-center justify-center relative h-64">
+                        <AnimatePresence mode="wait"><motion.div key={currentPage} initial={{ opacity: 0, x: 200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.5, ease: "easeInOut" }} className="w-full h-full absolute flex flex-col items-center justify-center p-4"><StepContent step={currentStep} page={currentPage} steps={steps}/></motion.div></AnimatePresence>
+                    </div>
+                    <div className="flex justify-between items-center mt-6">
+                        <button onClick={() => paginate(-1)} disabled={currentPage === 0} className="nav-button-vedic"><ChevronLeft size={24}/> Previous</button>
+                        <span className="text-lg text-amber-800">Step {currentPage + 1} / {steps.length}</span>
+                        <button onClick={() => paginate(1)} disabled={currentPage >= steps.length - 1} className="nav-button-vedic">Next <ChevronRight size={24}/></button>
+                    </div>
+                </>
+            )}
+        </motion.div>
+    );
+}
+
+function StepContent({ step, page, steps }) {
+    const commonMotionProps = { initial:{opacity: 0}, animate:{opacity: 1}, transition:{delay: 0.2} };
+
+    if (step.type === 'rhs' || step.type === 'lhs') {
+        const isRHS = step.type === 'rhs';
+        return (
+            <div className="text-center">
+                <p className="text-2xl text-amber-800 mb-4">{isRHS ? "Step 1: Right-Hand Side" : "Step 2: Left-Hand Side"}</p>
+                <motion.div {...commonMotionProps} className="flex items-center justify-center gap-6 text-4xl font-mono">
+                    <span>{step.calculation}</span><span>=</span><motion.span layoutId={isRHS ? 'rhs-result' : 'lhs-result'} className={`font-extrabold ${isRHS ? 'text-teal-600' : 'text-orange-600'}`}>{step.result}</motion.span>
+                </motion.div>
+                <motion.p {...commonMotionProps} transition={{delay: 1}} className="text-lg mt-8 text-stone-700">{step.explanation}</motion.p>
+            </div>
+        );
+    }
+    if (step.type === 'combine') {
+        const prevLHS = steps[page-1].result; const prevRHS = steps[page-2].result;
+        return (
+            <div className="text-center">
+                 <p className="text-2xl text-amber-800 mb-4">Step 3: Combine Results</p>
+                 <div className="flex items-center justify-center gap-4 text-5xl font-mono font-extrabold">
+                     <motion.span layoutId="lhs-result" className="text-orange-600">{prevLHS}</motion.span><motion.span layoutId="rhs-result" className="text-teal-600">{prevRHS}</motion.span>
+                 </div>
+                 <motion.p {...commonMotionProps} transition={{delay: 1.5}} className="text-lg mt-8 text-stone-700">{step.explanation}</motion.p>
+            </div>
+        );
+    }
+    if (step.type === 'division') {
+         return (
+            <div className="text-center">
+                {step.isRepeatingStart && <motion.p {...commonMotionProps} className="text-green-600 font-bold text-lg mb-4">Repetition Detected! The sequence now repeats.</motion.p>}
+                <motion.div {...commonMotionProps} className="flex items-center justify-center gap-4 sm:gap-6 text-3xl sm:text-4xl font-mono">
+                    <span>{step.dividend} ÷ {step.divisor}</span><span className="text-amber-700">=</span><span layoutId={`q-${page}`} className="text-orange-600 font-extrabold">{step.quotient}</span><span className="text-sm text-amber-800">(Q)</span><span className="text-amber-700">...</span><span className="text-teal-600 font-extrabold">{step.remainder}</span><span className="text-sm text-amber-800">(R)</span>
+                </motion.div>
+                <motion.div {...commonMotionProps} transition={{delay: 1.2}} className="mt-12 text-xl">
+                     <p className="text-amber-800 mb-2">{step.explanation}</p><div className="flex items-center justify-center font-mono text-3xl p-3 bg-amber-100/50 rounded-lg text-stone-800 font-extrabold">{step.newDividend}</div>
+                </motion.div>
+            </div>
+        );
+    }
+    return null;
 }
