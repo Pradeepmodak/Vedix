@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 import './styles/index.css' // Ensure your styles are imported
 import sutras from './data/Sutras'
 import { Route, Routes } from 'react-router-dom'
-import SutraVisualizer from './pages/SutraVisualizer'
+import RoutingScheme from './components/RoutingScheme'
 
 const App = () => {
   return (
@@ -13,7 +13,7 @@ const App = () => {
     <HeaderBar />
     <Routes>
       <Route path="/" element={<SutraCard />} />
-      <Route path="/sutra/:id" element={<SutraVisualizer />} />
+      <Route path="/sutra/:id" element={<RoutingScheme/>}/>
       </Routes>
     <Footer />
     </div>

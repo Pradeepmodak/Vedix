@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Main Component
-export default function SutraVisualizer() {
+export default function SutraVisualizer1() {
     // --- State for Inputs ---
     const [inputs, setInputs] = useState({ rule1: "", rule2_1: "", rule2_2: "", rule3_num: "", rule3_den: "" });
 
