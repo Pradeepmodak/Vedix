@@ -104,15 +104,16 @@ const Footer = () => {
           <h3 className="font-semibold text-lg mb-4">Connect with me</h3>
           <div className="flex justify-center md:justify-start gap-6">
             {[
-              { icon: <Github className="w-5 h-5" />, label: "GitHub", href: "#" },
-              { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "#" },
-              { icon: <Mail className="w-5 h-5" />, label: "Email", href: "#" },
+              { icon: <Github className="w-5 h-5" />, label: "GitHub", href: "https://github.com/Pradeepmodak" },
+              { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "https://www.linkedin.com/in/pradeep-modak-9a0a6a27a/" },
+              { icon: <Mail className="w-5 h-5" />, label: "Email", href: "mailto:pradeepmodakofficial@gmail.com" },
             ].map((item, idx) => (
               <motion.a
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 key={idx}
                 href={item.href}
+                target="_blank"
                 className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-200/60 hover:bg-amber-300 text-amber-900 font-medium shadow-md transition"
               >
                 {item.icon} {item.label}

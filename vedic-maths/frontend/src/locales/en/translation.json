@@ -1,0 +1,175 @@
+{
+  "vedic_sutras": "Vedix Sutras",
+  "github": "GitHub",
+  "linkedin": "LinkedIn",
+  "email": "Email",
+  "built_by": "Built with ❤️ by Pradeep Modak.",
+  "project_desc": "An open-source project inviting contributions from everyone passionate about sharing the timeless wisdom of Vedic Sutras.",
+  "unique_visitors": "Unique Visitors",
+  "total_visits": "Total Visits",
+  "connect_with_me": "Connect with me",
+  "sutras": {
+    "sutra1": {
+      "name": "Ekādhikena Pūrvena",
+      "description": "By one more than the previous one. This formula is primarily used for multiplication of numbers ending in 5 and for division."
+    },
+    "sutra2": {
+      "name": "Nikhilam Navatashcaramam Dashatah",
+      "description": "All from 9 and the last from 10. A powerful formula for multiplication of numbers close to a base, like 10, 100, or 1000."
+    },
+    "sutra3": {
+      "name": "Urdhva Tiryagbhyam",
+      "description": "Vertically and crosswise. This is a general formula for multiplication that can be applied to any numbers."
+    },
+    "sutra4": {
+      "name": "Parāvartya Yojayet",
+      "description": "Transpose and adjust. This formula is a general method for division and for solving linear equations."
+    },
+    "sutra5": {
+      "name": "Śūnyam Sāmyasamuccaye",
+      "description": "When the sum is the same, that sum is zero. Used to solve specific types of simultaneous linear equations."
+    },
+    "sutra6": {
+      "name": "Ānurūpyeṇa",
+      "description": "By proportion. It is a sub-sutra to Ekādhikena Pūrvena and is used for multiplication of numbers where one of the numbers is a multiple of the other."
+    },
+    "sutra7": {
+      "name": "Sankalana-vyavakalanabhyam",
+      "description": "By addition and by subtraction. Used to solve a specific type of simultaneous linear equations."
+    },
+    "sutra8": {
+      "name": "Pūranāpūranabhyām",
+      "description": "By the completion or non-completion. This formula is applied in solving problems involving squaring and multiplication."
+    },
+    "sutra9": {
+      "name": "Calana-Kalanabhyam",
+      "description": "By calculus. Used for factorization of polynomials and solving differential equations."
+    },
+    "sutra10": {
+      "name": "Yāvadūnam",
+      "description": "By the deficiency. This formula is used for squaring numbers close to a base."
+    },
+    "sutra11": {
+      "name": "Vyastisamastih",
+      "description": "Part and whole. This is a general principle that guides the application of other sutras."
+    },
+    "sutra12": {
+      "name": "Śesānyankena Caramena",
+      "description": "The remainders by the last digit. This formula is used for division, particularly with a denominator ending in 9."
+    },
+    "sutra13": {
+      "name": "Sopāntyadvayamantyam",
+      "description": "The ultimate and twice the penultimate. It is a special case for solving a particular type of quadratic equation."
+    },
+    "sutra14": {
+      "name": "Ekanyūnena Pūrvena",
+      "description": "By one less than the previous one. A formula for multiplication by a series of nines, such as 9, 99, 999, etc."
+    },
+    "sutra15": {
+      "name": "Guṇakasamuccayah",
+      "description": "The product of the sum of the coefficients is equal to the sum of the coefficients of the product. Used as a check for algebraic factorization."
+    },
+    "sutra16": {
+      "name": "Guṇakasamuccayaḥ",
+      "description": "The product of the sum of the coefficients is equal to the sum of the coefficients of the product. Used to verify the results of algebraic calculations."
+    }
+  },
+  "footer": "© 2025 Vedix | Contributions welcome from all 🙏",
+  "application_header_1": "Application 1: Squaring Numbers Ending in 5",
+  "visualize_again": "Visualize Again",
+  "result": "Result",
+  "step": "Step",
+  "step_1_description": "Right-Hand Side",
+  "step_2_description": "The Right-Hand Side (RHS) is always the square of 5.",
+  "previous": "Previous",
+  "next": "Next",
+  "app_a_title": "Application a: To multiply two numbers whose last digits sum to 10 and whose preceding digits are identical.",
+  "app_b_title": "Application b: To convert a fraction with a denominator ending in 9 into a recurring decimal.",
+
+  "sutra2_title": "Nikhilam Navatashcaramam Dashatah",
+  "sutra2_meaning_title": "What does it mean?",
+  "sutra2_meaning_text_part1": "The Sutra translates to \"",
+  "sutra2_meaning_text_part2": "All from 9 and the last from 10",
+  "sutra2_meaning_text_part3": "\". This is a powerful rule for subtracting any number from a power of 10 (like 100, 1000, etc.) without complex borrowing. This simple \"deficiency\" calculation is the key that unlocks the Nikhilam method for rapid multiplication. By finding how far two numbers are from a common base, we can use these small deficiency numbers to solve a much larger problem easily.",
+
+  "app1_subtraction_title": "Application 1: The 'Nikhilam' Subtraction Rule",
+  "app1_placeholder_base": "Base (A) e.g., 1000",
+  "app1_placeholder_number": "Number (B) e.g., 988",
+  "visualize_button": "Visualize",
+  "app2_multiplication_title": "Application 2: Multiplication using Nikhilam",
+  "app2_placeholder_num1": "Number 1 (e.g., 96)",
+  "app2_placeholder_num2": "Number 2 (e.g., 98)",
+
+  "error_input_title": "Input Error",
+  "error_valid_base_number": "Please enter a valid base and number.",
+  "error_base_power_of_10": "Base must be a power of 10 (e.g., 100, 1000).",
+  "error_number_smaller_than_base": "Number must be smaller than the base.",
+  "error_valid_two_numbers": "Please enter two valid numbers.",
+
+  "step1_identify_sub": "Step 1: Identify Base and Number",
+  "step2_all_from_9_last_from_10": "Step 2: Apply 'All from 9, Last from 10'",
+  "step3_final_deficiency": "Step 3: Final Deficiency",
+  "step1_find_best_base": "Step 1: Find the Best Base",
+  "step2_find_deficiencies": "Step 2: Find Deficiencies",
+  "step3_calculate_rhs": "Step 3: Calculate Right Part (RHS)",
+  "step4_adjust_rhs": "Step 4: Adjust RHS",
+  "step5_cross_add_lhs": "Step 5: Cross-Add for Left Part (LHS)",
+  "special_case_negative_rhs": "Special Case: Negative RHS",
+  "vinculum_process": "Vinculum Process",
+  "final_step_combine": "Final Step: Combine",
+
+  "sub_base_description": "Subtract {{num}} from Base {{base}}.",
+  "sub_step_last_digit": "For the Last Digit ({{digit}}):",
+  "sub_step_digit": "For Digit {{index}} ({{digit}}):",
+  "sub_combine_description": "The deficiency of {{num}} from {{base}} is:",
+  "base_description_part1": "Numbers are {{num1}} and {{num2}}.",
+  "base_description_part2": "Closest power of 10 is ",
+  "rhs_calculation": "({{def1}}) × ({{def2}})",
+  "rhs_adjust_description_part1": "Result is {{raw}}. Base requires {{numZeros}} digits.",
+  "rhs_adjust_description_part2": "Final RHS is ",
+  "rhs_adjust_description_part3": "Carry over {{carry}} to LHS.",
+  "lhs_calculation_1": "{{num1}} + ({{def2}})",
+  "lhs_calculation_2": "{{num2}} + ({{def1}})",
+  "lhs_carry_addition": "{{result}} + {{carry}} (carry)",
+  "vinculum_intro_description_part1": "LHS is {{lhs}}, RHS is {{rhs}}.",
+  "vinculum_intro_description_part2": "The RHS is negative, so we use the Vinculum process.",
+  "vinculum_process_description_part1": "Borrow 1 from LHS ({{lhsRaw}} → {{lhsFinal}}). Subtract RHS from Base ({{base}}).",
+  "vinculum_process_calculation": "{{base}} - {{absRhsRaw}}",
+
+  "sutra1_title": "Ekadhikena Purvena",
+  "sutra1_meaning_title": "What does it mean?",
+  "sutra1_meaning_text_part1": "The Sutra translates to \"",
+  "sutra1_meaning_text_part2": "By one more than the previous one",
+  "sutra1_meaning_text_part3": "\". It's a versatile mental math technique that simplifies specific calculations.",
+  "sutra1_use_title": "Where can we use it?",
+  "sutra1_app1_title": "Application 1: Squaring Numbers Ending in 5",
+  "sutra1_app1_desc": "To find the square of any number ending in 5.",
+  "sutra1_app2_title": "Application 2: Special Multiplication",
+  "sutra1_app2_desc": "To multiply two numbers whose last digits sum to 10 and whose preceding digits are identical.",
+  "sutra1_app3_title": "Application 3: Decimal Conversion",
+  "sutra1_app3_desc": "To convert a fraction with a denominator ending in 9 into a recurring decimal.",
+  "placeholder_num_ending_in_5": "e.g., 85",
+  "placeholder_num_1_2": "Num 1 (e.g., 42)",
+  "placeholder_num_1_2_2": "Num 2 (e.g., 48)",
+  "placeholder_numerator": "Numerator (e.g., 4)",
+  "placeholder_denominator": "Denominator (e.g., 89)",
+  "error_valid_num_ending_in_5": "Please enter a valid number ending in 5.",
+  "error_valid_two_numbers_2": "Please enter two valid numbers.",
+  "error_conditions_not_met": "Conditions not met: Last digits must sum to 10 and preceding digits must be the same.",
+  "error_valid_fraction_input": "Please enter a valid numerator and denominator.",
+  "error_denominator_ends_in_9": "Not Feasible: The denominator must end in 9.",
+  "step1_rhs": "Step 1: Right-Hand Side",
+  "step2_lhs": "Step 2: Left-Hand Side",
+  "step3_combine": "Step 3: Combine Results",
+  "sutra1_app1_step1_rhs_desc": "The Right-Hand Side (RHS) is always the square of 5.",
+  "sutra1_app1_step2_lhs_desc": "The Left-Hand Side (LHS) is the preceding digit(s) multiplied by the next consecutive number.",
+  "sutra1_app1_step3_combine_desc": "Combine the LHS and RHS to get the final answer.",
+  "sutra1_app2_step1_rhs_desc": "The RHS is the product of the last digits.",
+  "sutra1_app2_step2_lhs_desc": "The LHS is the common preceding digit multiplied by the next number.",
+  "sutra1_app2_step3_combine_desc": "Combine the results to get the final answer.",
+  "sutra1_app3_repetition_detected": "Repetition Detected! The sequence now repeats.",
+  "sutra1_app3_new_dividend_formula": "New Dividend = R({{remainder}}) prefixed to Q({{quotient}})",
+  "quotient_initial": "(Q)",
+  "remainder_initial": "(R)",
+  "step_counter": "Step {{current}} / {{total}}"
+}
