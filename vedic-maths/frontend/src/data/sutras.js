@@ -1,5 +1,4 @@
 // src/sutras/sutras.js
-
 const sutras = [
   { id: 1, key: "sutra1" },
   { id: 2, key: "sutra2" },
