@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import SutraVisualizer1 from "../pages/SutraVisualizer1";
-import SutraVisualizer2 from "../pages/SutraVisualizer2";
+import SutraVisualizer1 from "../pages/Sutras/SutraVisualizer1";
+import SutraVisualizer2 from "../pages/Sutras/SutraVisualizer2";
 const RoutingScheme = () => {
   const { id } = useParams();
   const renderSutra = () => {

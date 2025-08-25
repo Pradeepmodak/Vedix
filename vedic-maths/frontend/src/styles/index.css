@@ -15,7 +15,7 @@ body {
 @layer components {
   /* For the main content sections */
   .card {
-    @apply p-6 bg-[#f5e5c7] bg-opacity-80 backdrop-blur-sm rounded-xl border border-amber-400/50 shadow-lg mb-12;
+    @apply p-6 bg-[#f7d48a] bg-opacity-80 backdrop-blur-sm rounded-xl border border-amber-400/50 shadow-lg mb-12;
   }
 
   /* For titles within the cards */

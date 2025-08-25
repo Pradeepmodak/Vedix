@@ -4,12 +4,12 @@ import axios from "axios";
 import { motion } from "framer-motion";
 
 const Footer = () => {
-  const [visitors, setVisitors] = useState(0); // unique visitors
-  const [visits, setVisits] = useState(0); // total visits
+  const [visitors, setVisitors] = useState(0);
+  const [visits, setVisits] = useState(0);
   const [displayVisitors, setDisplayVisitors] = useState(0);
   const [displayVisits, setDisplayVisits] = useState(0);
 
-  // Track visitor + fetch metrics
+  // Track + fetch
   useEffect(() => {
     const trackAndFetch = async () => {
       try {
@@ -38,9 +38,9 @@ const Footer = () => {
     trackAndFetch();
   }, []);
 
-  // Animate visitors counter
+  // Animated counters
   useEffect(() => {
-    if (visitors === 0) return;
+    if (!visitors) return;
     let current = 0;
     const increment = Math.ceil(visitors / 100);
     const interval = setInterval(() => {
@@ -54,9 +54,8 @@ const Footer = () => {
     return () => clearInterval(interval);
   }, [visitors]);
 
-  // Animate visits counter
   useEffect(() => {
-    if (visits === 0) return;
+    if (!visits) return;
     let current = 0;
     const increment = Math.ceil(visits / 100);
     const interval = setInterval(() => {
@@ -71,18 +70,21 @@ const Footer = () => {
   }, [visits]);
 
   return (
-    <footer className="relative min-h-[25vh] w-full bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300 text-amber-900 border-t border-amber-400 shadow-xl">
-      {/* Main content */}
-      <div className="relative w-full mx-auto px-6 py-12 flex flex-col md:flex-row items-center md:justify-between gap-12 max-w-7xl">
+    <footer className="relative w-full bg-background2 bg-cover bg-center bg-no-repeat text-stone-800 border-t border-amber-700/40 shadow-lg">
+      {/* Overlay for parchment tint */}
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-100/90 via-amber-200/90 to-amber-300/90 backdrop-blur-sm" />
+
+      {/* Content */}
+      <div className="relative max-w-7xl mx-auto px-6 py-12 md:py-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
         
-        {/* About section */}
+        {/* About */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-md text-center md:text-left"
+          className="max-w-md"
         >
-          <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3">
             <ScrollText className="w-7 h-7 text-amber-800" />
             <h2 className="text-2xl font-bold tracking-wide">Vedix Sutras</h2>
           </div>
@@ -94,7 +96,7 @@ const Footer = () => {
           </p>
         </motion.div>
 
-        {/* Links section */}
+        {/* Socials */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -102,7 +104,7 @@ const Footer = () => {
           className="text-center md:text-left"
         >
           <h3 className="font-semibold text-lg mb-4">Connect with me</h3>
-          <div className="flex justify-center md:justify-start gap-6">
+          <div className="flex flex-wrap justify-center md:justify-start gap-4">
             {[
               { icon: <Github className="w-5 h-5" />, label: "GitHub", href: "https://github.com/Pradeepmodak" },
               { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "https://www.linkedin.com/in/pradeep-modak-9a0a6a27a/" },
@@ -114,7 +116,7 @@ const Footer = () => {
                 key={idx}
                 href={item.href}
                 target="_blank"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-200/60 hover:bg-amber-300 text-amber-900 font-medium shadow-md transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-200/70 hover:bg-amber-300 text-amber-900 font-medium shadow-md transition"
               >
                 {item.icon} {item.label}
               </motion.a>
@@ -122,7 +124,7 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        {/* Visitors section */}
+        {/* Visitor stats */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -162,7 +164,7 @@ const Footer = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="relative bg-amber-800 text-amber-100 text-sm py-3 text-center w-full"
+        className="relative bg-amber-900/90 text-amber-100 text-sm py-3 text-center w-full border-t border-amber-700/60"
       >
         © {new Date().getFullYear()} Vedix | Contributions welcome from all ✨
       </motion.div>

@@ -9,6 +9,8 @@ export default {
       backgroundImage: {
         'vedic-bg': "url('/src/assets/background.png')",
         'sutra-bg':"url('/src/assets/sutra-bg.jpg')",
+        'parchament':"url('/src/assets/parchament.png')",
+        'background2':"url('/src/assets/background2.jpg')",
       },
     },
   },
