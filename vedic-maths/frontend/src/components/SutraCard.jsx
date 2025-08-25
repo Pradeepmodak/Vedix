@@ -1,5 +1,5 @@
 import React from "react";
-import sutras from "../data/Sutras";
+import sutras from "../data/Sutras.js";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
