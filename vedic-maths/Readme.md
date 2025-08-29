@@ -4,19 +4,13 @@
 
 
 
-## Acknowledgements
 
-That’s a beautiful acknowledgement 👏 — it shows your motivation and gives credit to the people who supported you.
 
-Here’s how we can write your **Acknowledgements section** properly for the README:
-
----
-
-## 🙏 Acknowledgements
+##  Acknowledgements
 
 * This project was inspired by my **Indian Knowledge System** subject in the 5th semester of Engineering and Computational Mechanics. Our professor encouraged us to explore **Vedic Sutras** as they significantly improve the speed and efficiency of mathematical computations compared to conventional methods.
 * I would like to thank my professor for motivating me to bring this idea into practice and to preserve and promote the importance of **Vedic Mathematics**.
-* Special thanks to my friend **Sonu Kumar Hansadha** who supported and guided me throughout this project, and encouraged me to make it **open-source** and welcoming for contributors.
+* Special thanks to my friend **Sonu Kumar Hansda** who supported and guided me throughout this project, and encouraged me to make it **open-source** and welcoming for contributors.
 
 ---
 
@@ -120,11 +114,6 @@ We welcome contributions from everyone! 🎉
 * Write tests and improve documentation
 
 
-
-## Folder structure
-
-Perfect 👍 thanks for sharing the screenshot!
-I’ll now explain your **folder structure** clearly so that new contributors understand **where to look**, **where to add**, and **how to maintain reusability + clean architecture**.
 
 ---
 
