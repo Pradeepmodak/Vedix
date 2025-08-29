@@ -173,9 +173,6 @@ vedic-maths/
   * Keep **animations** and **logic** modular → don’t mix inside big components.
   * Use `locales/` if you add translations.
 
-* **utils/**
-
-  * Both frontend & backend have a `utils/` folder → keep helper functions here.
 
 * **.env.example**
 
