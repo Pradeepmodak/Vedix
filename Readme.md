@@ -120,7 +120,10 @@ We welcome contributions from everyone! 🎉
 ## 📂 Project Structure
 
 ```
-vedic-maths/
+/
+├── README.md                    # Project documentation
+└── LICENSE                      # Project license
+└── vedic-maths/
 │
 ├── backend/                     # Backend (Node.js + Express + MongoDB)
 │   ├── config/                  # Database and environment configuration
@@ -152,8 +155,7 @@ vedic-maths/
 │   └── .env.example             # Example env (backend API URL, etc.)
 │
 ├── .gitignore                   # Git ignore file
-├── README.md                    # Project documentation
-└── LICENSE                      # Project license
+
 ```
 
 ---
